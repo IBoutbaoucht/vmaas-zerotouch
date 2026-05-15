@@ -1,0 +1,32 @@
+# VMaaS runtime configuration.
+#
+# Values wrapped in ${VAR} are interpolated from the process environment at
+# startup. Missing required variables abort the process with a clear error.
+
+listen: ":8080"
+auth_token: "${VMAAS_TOKEN}"
+
+esxi:
+  url:          "https://192.0.2.10/sdk"           # change to your ESXi host
+  user:         "root"
+  password:     "${ESXI_PASSWORD}"
+  insecure:     true                 # most homelab hosts use a self-signed cert
+  datastore:    "datastore1"
+  folder:       "/ha-datacenter/vm"
+  gold_vm:      "ubuntu-22.04-template"
+  session_keepalive_seconds: 300
+
+network:
+  pool_start:   "192.0.2.62"
+  pool_end:     "192.0.2.69"         # inclusive; pick a free range on your subnet
+  prefix:       24
+  gateway:      "192.0.2.254"
+  dns:          ["1.1.1.1", "8.8.8.8"]
+  nic_name:     "ens34"              # stable as long as gold .vmx keeps ethernet0.pciSlotNumber=34
+
+cloudinit:
+  default_user:   "cuneyt"
+  ssh_keys_file:  "/etc/vmaas/authorized_keys"   # one SSH key per line, injected into every VM
+
+store:
+  path: "/var/lib/vmaas/state.db"

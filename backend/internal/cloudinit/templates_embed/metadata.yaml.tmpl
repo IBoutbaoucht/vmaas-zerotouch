@@ -1,0 +1,14 @@
+instance-id: {{.InstanceID}}
+local-hostname: {{.Hostname}}
+network:
+  version: 2
+  ethernets:
+    {{.NIC}}:
+      addresses:
+        - {{.IP}}/{{.Prefix}}
+      gateway4: {{.Gateway}}
+      nameservers:
+        addresses:
+{{- range .DNS }}
+          - {{.}}
+{{- end }}

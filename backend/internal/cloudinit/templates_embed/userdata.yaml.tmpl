@@ -1,0 +1,29 @@
+#cloud-config
+# Rendered per-VM by VMaaS. Consumed by cloud-init's VMware datasource on first boot.
+
+hostname: {{.Hostname}}
+manage_etc_hosts: true
+
+users:
+  - name: {{.User}}
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: [adm, sudo]
+    lock_passwd: false
+    passwd: $6$GhKIMvD5bik9DWj$.sAFSogu3tqOGJAELjgJw/Vditws2OjXi0LUAG2AMoHvveREcqQWly7jNspbuf5sK3Q7f6my1naYdlonbtC90.
+    ssh_authorized_keys:
+{{- range .SSHKeys }}
+      - {{.}}
+{{- end }}
+
+chpasswd:
+  expire: false
+
+ssh_pwauth: true
+
+write_files:
+  - path: /var/log/vmaas-sentinel.log
+    content: |
+      vmaas-sentinel: cloud-init applied for {{.Hostname}} ({{.IP}})
+      If you can read this, the gold image's cloud-init + VMware datasource are working.
+    permissions: '0644'

@@ -1,0 +1,18 @@
+# Local secrets and runtime state -- never commit.
+.env
+/data/
+/keys/authorized_keys
+
+# Build outputs.
+/backend/vmaasd
+*.test
+*.out
+
+# Editor litter.
+.idea/
+.vscode/
+*.swp
+
+# OS noise.
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+# Keep the build context small.
+.git
+.gitignore
+*.md
+Dockerfile
+.dockerignore
+/data
+state.db
+*.db

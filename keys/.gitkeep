@@ -1,0 +1,5 @@
+# Drop your SSH public key into this directory as `authorized_keys`.
+# Example:
+#   cp ~/.ssh/id_ed25519.pub keys/authorized_keys
+#
+# The file is gitignored and never committed.
