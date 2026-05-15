@@ -1,0 +1,49 @@
+# VMaaS local stack.
+#
+# Two services:
+#   backend  — Go API + orchestrator. Connects out to the configured
+#              ESXi host. Uses host networking so its routing matches
+#              the host's. Listens on :8080.
+#   frontend — nginx serving the static UI on localhost:8081, reverse-
+#              proxying /api/ to the backend over the host gateway.
+#
+# Persistent state (bbolt) and your SSH key live under ./data and ./keys
+# on the host so `docker compose down` doesn't lose VMs or credentials.
+#
+# Run:   docker compose up --build
+# Open:  http://localhost:8081/
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: vmaas-backend:dev
+    container_name: vmaas-backend
+    restart: unless-stopped
+    # Host networking: backend reuses the host's routing to reach the
+    # configured ESXi host and listens on the host's :8080. The frontend
+    # reaches it via the extra_hosts entry below.
+    network_mode: host
+    env_file:
+      - .env
+    volumes:
+      - ./data:/var/lib/vmaas
+      - ./keys/authorized_keys:/etc/vmaas/authorized_keys:ro
+      - ./backend/configs/vmaas.yaml:/etc/vmaas/vmaas.yaml:ro
+    command: ["--config", "/etc/vmaas/vmaas.yaml"]
+
+  frontend:
+    build:
+      context: ./frontend
+    image: vmaas-frontend:dev
+    container_name: vmaas-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8081:80"
+    # On Linux, host.docker.internal is not resolvable by default. The
+    # mapping below points it at the host's gateway IP so nginx.conf can
+    # use a single hostname on both Linux and Docker Desktop.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
