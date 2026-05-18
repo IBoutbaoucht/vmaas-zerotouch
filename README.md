@@ -22,7 +22,7 @@ Full provision -> SSH -> delete cycle, ~80 seconds, captured by
 [`docs/demo.mp4`](docs/demo.mp4).
 
 ## What it does
-
+ 
 You click **Provision** in the web UI. Roughly 60 seconds later:
 
 - A new Ubuntu 22.04 VM exists on your ESXi host.
