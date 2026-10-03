@@ -1,8 +1,25 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="VMaaS Zero-Touch — self-service VM provisioning for standalone ESXi" width="100%">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Go-00ADD8?style=flat-square&logo=go&logoColor=white">
+  <img src="https://img.shields.io/badge/VMware_ESXi-607078?style=flat-square&logo=vmware&logoColor=white">
+  <img src="https://img.shields.io/badge/cloud--init-FCC624?style=flat-square">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square">
+</p>
+
 # VMaaS Zero-Touch
 
 > A self-service VM provisioning platform for standalone VMware ESXi.
 > One click in the browser, ~60 seconds later you have a fully booted
 > Ubuntu VM with a static IP and your SSH key already authorized.
+
+## Why it is technically interesting
+
+- **Rebuilds vCenter workflows on a standalone host** — noCloneVM_Task, no DRS, no inventory hierarchy on ESXi, so the platform composes primitives that *do* exist (datastore ops, register/unregister, `extraConfig`, `PowerOn`) driven by Go and govmomi.
+- **~60s full lifecycle** — browser click → cloned Ubuntu 22.04 VM → static IP from your pool → SSH key pre-authorized → sentinel log confirms cloud-init ran clean.
+- **Clean teardown** — delete powers off, unregisters, wipes the datastore files, and returns the IP to the pool.
 
 ```
 +-----------+   HTTP    +---------+   SOAP / govmomi   +--------+
@@ -206,7 +223,6 @@ make build           # local go build (no docker)
 End-to-end demonstrated against a real homelab hypervisor (ESXi 8.x):
 ~58 seconds from POST to ssh-ready VM, fully reproducible from a clean
 checkout.
+---
 
-## License
-
-MIT -- see [LICENSE](LICENSE).
+<p align="center"><sub>MIT License · Built by <a href="https://github.com/IBoutbaoucht">Imad Boutbaoucht</a></sub></p>
