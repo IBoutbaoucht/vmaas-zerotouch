@@ -17,7 +17,7 @@
 
 ## Why it is technically interesting
 
-- **Rebuilds vCenter workflows on a standalone host** — noCloneVM_Task, no DRS, no inventory hierarchy on ESXi, so the platform composes primitives that *do* exist (datastore ops, register/unregister, `extraConfig`, `PowerOn`) driven by Go and govmomi.
+- **Rebuilds vCenter workflows on a standalone host** — no `CloneVM_Task`, no DRS, no inventory hierarchy on ESXi, so the platform composes primitives that *do* exist (datastore ops, register/unregister, `extraConfig`, `PowerOn`) driven by Go and govmomi.
 - **~60s full lifecycle** — browser click → cloned Ubuntu 22.04 VM → static IP from your pool → SSH key pre-authorized → sentinel log confirms cloud-init ran clean.
 - **Clean teardown** — delete powers off, unregisters, wipes the datastore files, and returns the IP to the pool.
 
