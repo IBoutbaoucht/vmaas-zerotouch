@@ -225,4 +225,4 @@ End-to-end demonstrated against a real homelab hypervisor (ESXi 8.x):
 checkout.
 ---
 
-<p align="center"><sub>MIT License · Built by <a href="https://github.com/IBoutbaoucht">Imad Boutbaoucht</a></sub></p>
+<p align="center"><sub>MIT License · <a href="LICENSE">LICENSE</a></sub></p>
